@@ -13,4 +13,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ShowdownMetrics"
-include ':app'
+include ':PopulatorApp'
+include ':SharedModule'
+include ':ViewerApp'

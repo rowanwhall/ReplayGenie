@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface JsonShowdownService {
 
     @GET("search.json")
-    suspend fun getReplays(@Query("format") format: String = "gen8vgc2022",
+    suspend fun getReplays(@Query("format") format: String = "gen9vgc2023series2",
                            @Query("page") page: Int = 1): Response<List<ReplayData>>
 }
 

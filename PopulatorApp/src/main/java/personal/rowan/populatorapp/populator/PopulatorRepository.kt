@@ -115,16 +115,17 @@ class PopulatorRepository @Inject constructor(
                             .get()
                             .addOnSuccessListener {
                                 if (it.isEmpty) {
-                                    val teams =
+                                    val parsedReplay =
                                         ReplayParser().parseReplay(currentState.logsToCheck[replayId]!!)
                                     val allTeams = mutableListOf<String>()
-                                    allTeams.addAll(teams.first)
-                                    allTeams.addAll(teams.second)
+                                    allTeams.addAll(parsedReplay.team1)
+                                    allTeams.addAll(parsedReplay.team2)
                                     val replayData = hashMapOf(
                                         "replay" to replayUrl,
-                                        "team1" to teams.first,
-                                        "team2" to teams.second,
-                                        "allteams" to allTeams
+                                        "team1" to parsedReplay.team1,
+                                        "team2" to parsedReplay.team2,
+                                        "allteams" to allTeams,
+                                        "highElo" to parsedReplay.highestElo
                                     )
                                     dataToUpload.add(replayData)
                                 }

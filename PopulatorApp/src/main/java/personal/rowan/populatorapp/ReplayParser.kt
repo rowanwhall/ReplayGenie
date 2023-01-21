@@ -8,7 +8,7 @@ const val END_DELIMITER = "|teampreview|"
 
 class ReplayParser {
 
-    fun parseReplay(replayString: String): Pair<List<String>, List<String>> {
+    fun parseReplay(replayString: String): ParsedReplay {
         val team1 = mutableListOf<String>()
         val team2 = mutableListOf<String>()
 
@@ -36,7 +36,16 @@ class ReplayParser {
                 team2.add(it)
             }
 
-        return Pair(team1, team2)
-    }
+        val regex = "<strong>(.*)</strong>".toRegex()
+        val ratings = regex.findAll(replayString).map { it.groupValues[1].toInt() }.toList()
+        val maxRating = ratings.maxOrNull() ?: -1
 
+        return ParsedReplay(team1, team2, maxRating)
+    }
 }
+
+data class ParsedReplay(
+    val team1: List<String>,
+    val team2: List<String>,
+    val highestElo: Int
+)

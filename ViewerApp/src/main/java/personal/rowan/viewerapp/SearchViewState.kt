@@ -5,4 +5,4 @@ package personal.rowan.viewerapp
  */
 data class SearchViewState(val items: List<SearchItemViewState>)
 
-data class SearchItemViewState(val replayId: String, val team1: List<String>, val team2: List<String>)
+data class SearchItemViewState(val replayId: String, val team1: List<String>, val team2: List<String>, val highElo: Long)

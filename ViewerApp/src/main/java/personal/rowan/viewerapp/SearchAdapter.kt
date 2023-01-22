@@ -36,10 +36,13 @@ class SearchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val team1View = itemView.findViewById<TextView>(R.id.tv_team1)
     private val team2View = itemView.findViewById<TextView>(R.id.tv_team2)
     private val replayLinkView = itemView.findViewById<TextView>(R.id.tv_replay_link)
+    private val highEloLink = itemView.findViewById<TextView>(R.id.tv_high_elo)
 
     fun bind(viewState: SearchItemViewState) {
         team1View.text = viewState.team1.toString()
         team2View.text = viewState.team2.toString()
         replayLinkView.text = viewState.replayId
+        val highElo = viewState.highElo
+        highEloLink.text = if (highElo > 0) highElo.toString() else "No ELO Data"
     }
 }

@@ -31,7 +31,8 @@ class SearchRepository @Inject constructor(private val fireStore: FirebaseFirest
                         val replay = data["replay"] as String
                         val team1 = data["team1"] as List<String>
                         val team2 = data["team2"] as List<String>
-                        result.add(SearchItemViewState(replay, team1, team2))
+                        val highElo = data["highElo"] as Long
+                        result.add(SearchItemViewState(replay, team1, team2, highElo))
                     }
                     trySend(Resource.Success(SearchViewState(result)))
                 }

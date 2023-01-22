@@ -27,9 +27,8 @@ class SearchViewModel @Inject constructor(
     private val liveData: MutableLiveData<Resource<SearchViewState>> = MutableLiveData()
 
     fun getReplays(teamSearch: String) {
-        val parsedSearch = teamSearch.split(" ")
         viewModelScope.launch {
-            repository.getReplays(parsedSearch)
+            repository.getReplays(listOf(teamSearch))
                 .collect { liveData.value = it }
         }
     }

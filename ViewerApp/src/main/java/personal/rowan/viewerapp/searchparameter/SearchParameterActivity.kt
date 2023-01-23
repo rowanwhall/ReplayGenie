@@ -38,6 +38,30 @@ class SearchParameterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search_parameter)
 
         val eloChips = findViewById<ChipGroup>(R.id.cg_elo)
+        val selectedItemsRecycler = findViewById<RecyclerView>(R.id.rv_selected)
+        val searchButton = findViewById<ExtendedFloatingActionButton>(R.id.btn_search)
+
+        setupRecycler(selectedItemsRecycler)
+        setupEloChips(eloChips)
+        setupSearchButton(searchButton)
+        setupAutoComplete()
+
+        fun bindToViewState(viewState: SearchParameterViewState) {
+            adapter.setData(viewState)
+            searchButton.isEnabled = viewState.selectedItems.isNotEmpty()
+        }
+        bindToViewState(viewModel.getValue())
+        viewModel.liveData().observe(this) {
+            bindToViewState(it)
+        }
+    }
+
+    private fun setupRecycler(selectedItemsRecycler: RecyclerView) {
+        selectedItemsRecycler.layoutManager = LinearLayoutManager(this)
+        selectedItemsRecycler.adapter = adapter
+    }
+
+    private fun setupEloChips(eloChips: ChipGroup) {
         eloChips.setOnCheckedStateChangeListener { _, checkedIds ->
             val selectedElo = if (checkedIds.isEmpty()) {
                 null
@@ -52,18 +76,14 @@ class SearchParameterActivity : AppCompatActivity() {
             }
             viewModel.setElo(selectedElo)
         }
-        val searchButton = findViewById<ExtendedFloatingActionButton>(R.id.btn_search)
-        searchButton.setOnClickListener {
-            navigateToSearchResults()
-        }
-        val selectedItemsRecycler = findViewById<RecyclerView>(R.id.rv_selected)
-        selectedItemsRecycler.layoutManager = LinearLayoutManager(this)
-        selectedItemsRecycler.adapter = adapter
-        viewModel.liveData().observe(this) {
-            adapter.setData(it)
-        }
+    }
 
-        setupAutoComplete()
+    private fun setupSearchButton(searchButton: ExtendedFloatingActionButton) {
+        searchButton.setOnClickListener {
+            val intent = Intent(this, SearchResultActivity::class.java)
+            intent.putExtra(SearchResultActivity.EXTRA_KEY_PARAMETERS, viewModel.getParameters())
+            startActivity(intent)
+        }
     }
 
     private fun setupAutoComplete() {
@@ -80,11 +100,5 @@ class SearchParameterActivity : AppCompatActivity() {
             viewModel.selectItem(selectedItem)
             editText.text.clear()
         }
-    }
-
-    private fun navigateToSearchResults() {
-        val intent = Intent(this, SearchResultActivity::class.java)
-        intent.putExtra(SearchResultActivity.EXTRA_KEY_PARAMETERS, viewModel.getParameters())
-        startActivity(intent)
     }
 }

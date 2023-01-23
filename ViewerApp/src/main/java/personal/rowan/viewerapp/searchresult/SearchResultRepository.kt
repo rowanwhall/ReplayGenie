@@ -1,6 +1,7 @@
 package personal.rowan.viewerapp.searchresult
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -26,6 +27,7 @@ class SearchResultRepository @Inject constructor(private val fireStore: Firebase
                 .whereArrayContainsAny("allteams", teamSearch)
                 .whereGreaterThanOrEqualTo("highElo", minElo)
                 .whereLessThanOrEqualTo("highElo", maxElo)
+                .orderBy("highElo", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener {
                     val result = mutableListOf<SearchResultItemViewState>()

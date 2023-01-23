@@ -9,4 +9,5 @@
     <string name="search_parameter_button">Search</string>
 
     <string name="search_result_empty_view">No Results Found</string>
+    <string name="search_result_error">Something went wrong, please try again</string>
 </resources>

@@ -44,7 +44,7 @@ class SearchParameterViewModel @Inject constructor(application: Application) :
         return SearchParameter(currentValue.selectedItems.keys.toList(), currentValue.eloParameter)
     }
 
-    private fun getValue() = liveData.value ?: SearchParameterViewState(mutableMapOf(), EloParameter.NONE)
+    fun getValue() = liveData.value ?: SearchParameterViewState(mutableMapOf(), null)
 
     fun liveData(): LiveData<SearchParameterViewState> = liveData
 }

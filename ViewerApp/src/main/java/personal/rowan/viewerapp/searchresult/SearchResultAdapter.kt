@@ -1,4 +1,4 @@
-package personal.rowan.viewerapp
+package personal.rowan.viewerapp.searchresult
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import personal.rowan.viewerapp.R
 
 /**
  * Created by Rowan Hall
  */
-class SearchAdapter(private var data: List<SearchItemViewState>): RecyclerView.Adapter<SearchViewHolder>() {
+class SearchResultAdapter(private var data: List<SearchResultItemViewState>): RecyclerView.Adapter<SearchViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(viewState: SearchViewState) {
+    fun setData(viewState: SearchResultViewState) {
         data = viewState.items
         notifyDataSetChanged()
     }
@@ -38,7 +39,7 @@ class SearchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val replayLinkView = itemView.findViewById<TextView>(R.id.tv_replay_link)
     private val highEloLink = itemView.findViewById<TextView>(R.id.tv_high_elo)
 
-    fun bind(viewState: SearchItemViewState) {
+    fun bind(viewState: SearchResultItemViewState) {
         team1View.text = viewState.team1.toString()
         team2View.text = viewState.team2.toString()
         replayLinkView.text = viewState.replayId

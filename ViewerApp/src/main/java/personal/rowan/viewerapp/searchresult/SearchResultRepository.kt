@@ -1,4 +1,4 @@
-package personal.rowan.viewerapp
+package personal.rowan.viewerapp.searchresult
 
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -14,9 +14,9 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 @ActivityRetainedScoped
-class SearchRepository @Inject constructor(private val fireStore: FirebaseFirestore){
+class SearchResultRepository @Inject constructor(private val fireStore: FirebaseFirestore){
 
-    suspend fun getReplays(teamSearch: List<String>): Flow<Resource<SearchViewState>> {
+    suspend fun getReplays(teamSearch: List<String>): Flow<Resource<SearchResultViewState>> {
         return callbackFlow {
             trySend(Resource.Loading())
             fireStore
@@ -25,16 +25,16 @@ class SearchRepository @Inject constructor(private val fireStore: FirebaseFirest
                 .whereArrayContainsAny("allteams", teamSearch)
                 .get()
                 .addOnSuccessListener {
-                    val result = mutableListOf<SearchItemViewState>()
+                    val result = mutableListOf<SearchResultItemViewState>()
                     it.documents.forEach { document ->
                         val data = document.data ?: return@forEach
                         val replay = data["replay"] as String
                         val team1 = data["team1"] as List<String>
                         val team2 = data["team2"] as List<String>
                         val highElo = data["highElo"] as Long
-                        result.add(SearchItemViewState(replay, team1, team2, highElo))
+                        result.add(SearchResultItemViewState(replay, team1, team2, highElo))
                     }
-                    trySend(Resource.Success(SearchViewState(result)))
+                    trySend(Resource.Success(SearchResultViewState(result)))
                 }
                 .addOnFailureListener {
                     trySend(Resource.Error(it.localizedMessage ?: "firebase query error"))

@@ -1,25 +1,30 @@
-package personal.rowan.viewerapp
+package personal.rowan.viewerapp.searchresult
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.os.Parcelable
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.parcelize.Parcelize
 import personal.rowan.sharedmodule.Resource
+import personal.rowan.viewerapp.R
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class SearchActivity : AppCompatActivity() {
+class SearchResultActivity : AppCompatActivity() {
 
-    private val viewModel: SearchViewModel by viewModels()
-    private val adapter: SearchAdapter = SearchAdapter(listOf())
+    companion object {
+        const val EXTRA_KEY_PARAMETERS = "EXTRA_KEY_PARAMETERS"
+    }
+
+    private val viewModel: SearchResultViewModel by viewModels()
+    private val adapter: SearchResultAdapter = SearchResultAdapter(listOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +47,13 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        val editText = findViewById<EditText>(R.id.et_search)
-        val button = findViewById<Button>(R.id.btn_search)
-        button.setOnClickListener {
-            viewModel.getReplays(editText.text.toString().trim())
+        val parameters = intent.getParcelableExtra<SearchResultParameter>(EXTRA_KEY_PARAMETERS) ?: {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+            finish()
         }
+        viewModel.getReplays((parameters as SearchResultParameter).selectedItems)
     }
 }
+
+@Parcelize
+data class SearchResultParameter(val selectedItems: List<String>): Parcelable

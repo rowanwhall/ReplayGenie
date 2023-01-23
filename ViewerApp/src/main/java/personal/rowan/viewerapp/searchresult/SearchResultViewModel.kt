@@ -1,4 +1,4 @@
-package personal.rowan.viewerapp
+package personal.rowan.viewerapp.searchresult
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import personal.rowan.sharedmodule.Resource
 import javax.inject.Inject
@@ -19,19 +18,19 @@ import javax.inject.Inject
 @FlowPreview
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class SearchViewModel @Inject constructor(
-    private val repository: SearchRepository,
+class SearchResultViewModel @Inject constructor(
+    private val repository: SearchResultRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val liveData: MutableLiveData<Resource<SearchViewState>> = MutableLiveData()
+    private val liveData: MutableLiveData<Resource<SearchResultViewState>> = MutableLiveData()
 
-    fun getReplays(teamSearch: String) {
+    fun getReplays(teamSearch: List<String>) {
         viewModelScope.launch {
-            repository.getReplays(listOf(teamSearch))
+            repository.getReplays(teamSearch)
                 .collect { liveData.value = it }
         }
     }
 
-    fun liveData(): LiveData<Resource<SearchViewState>> = liveData
+    fun liveData(): LiveData<Resource<SearchResultViewState>> = liveData
 }

@@ -12,7 +12,7 @@ data class SearchParameter(val selectedItems: List<String>, val elo: EloParamete
 
 enum class EloParameter(val minElo: Int, val maxElo: Int) {
     NONE(-1, -1),
-    LOW(0, 1500),
-    MID(1500, 1700),
+    LOW(0, 1400),
+    MID(1400, 1700),
     HIGH(1700, 3000)
 }

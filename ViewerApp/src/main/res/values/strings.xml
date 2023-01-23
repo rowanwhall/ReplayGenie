@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Replay Genie</string>
+
+    <string name="search_parameter_elo_none">Unranked</string>
+    <string name="search_parameter_elo_low">0–1500</string>
+    <string name="search_parameter_elo_mid">1500–1700</string>
+    <string name="search_parameter_elo_high">1701+</string>
+    <string name="search_parameter_et_hint">Enter names</string>
+    <string name="search_parameter_button">Search</string>
+
+    <string name="search_result_empty_view">No Results Found</string>
 </resources>

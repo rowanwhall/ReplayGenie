@@ -16,13 +16,16 @@ import javax.inject.Inject
 @ActivityRetainedScoped
 class SearchResultRepository @Inject constructor(private val fireStore: FirebaseFirestore){
 
-    suspend fun getReplays(teamSearch: List<String>): Flow<Resource<SearchResultViewState>> {
+    @Suppress("UNCHECKED_CAST")
+    suspend fun getReplays(teamSearch: List<String>, minElo: Int, maxElo: Int): Flow<Resource<SearchResultViewState>> {
         return callbackFlow {
             trySend(Resource.Loading())
             fireStore
                 .collection("replay-data")
                 .limit(50)
                 .whereArrayContainsAny("allteams", teamSearch)
+                .whereGreaterThanOrEqualTo("highElo", minElo)
+                .whereLessThanOrEqualTo("highElo", maxElo)
                 .get()
                 .addOnSuccessListener {
                     val result = mutableListOf<SearchResultItemViewState>()

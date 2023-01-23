@@ -20,7 +20,7 @@ class SearchResultAdapter(private var data: List<SearchResultItemViewState>): Re
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_view_search, parent, false))
+        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_view_search_result, parent, false))
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {

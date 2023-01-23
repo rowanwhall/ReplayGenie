@@ -2,7 +2,7 @@ package personal.rowan.viewerapp.searchresult
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
+import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.parcelize.Parcelize
 import personal.rowan.sharedmodule.Resource
 import personal.rowan.viewerapp.R
+import personal.rowan.viewerapp.SearchParameter
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -28,15 +28,18 @@ class SearchResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_search_result)
 
+        val emptyView = findViewById<TextView>(R.id.tv_empty)
         val recyclerView = findViewById<RecyclerView>(R.id.rv_search)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         viewModel.liveData().observe(this) {
             when (it) {
                 is Resource.Success -> {
-                    adapter.setData(it.data!!)
+                    val data = it.data!!
+                    adapter.setData(data)
+                    emptyView.visibility = if (data.items.isEmpty()) View.VISIBLE else View.GONE
                 }
                 is Resource.Error -> {
                     Toast.makeText(this, "error ${it.message}", Toast.LENGTH_SHORT).show()
@@ -47,13 +50,11 @@ class SearchResultActivity : AppCompatActivity() {
             }
         }
 
-        val parameters = intent.getParcelableExtra<SearchResultParameter>(EXTRA_KEY_PARAMETERS) ?: {
+        @Suppress("DEPRECATION")
+        val parameters = intent.getParcelableExtra<SearchParameter>(EXTRA_KEY_PARAMETERS) ?: {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
             finish()
         }
-        viewModel.getReplays((parameters as SearchResultParameter).selectedItems)
+        viewModel.getReplays((parameters as SearchParameter))
     }
 }
-
-@Parcelize
-data class SearchResultParameter(val selectedItems: List<String>): Parcelable

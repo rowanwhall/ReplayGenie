@@ -10,6 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import personal.rowan.sharedmodule.Resource
+import personal.rowan.viewerapp.SearchParameter
 import javax.inject.Inject
 
 /**
@@ -25,9 +26,9 @@ class SearchResultViewModel @Inject constructor(
 
     private val liveData: MutableLiveData<Resource<SearchResultViewState>> = MutableLiveData()
 
-    fun getReplays(teamSearch: List<String>) {
+    fun getReplays(parameter: SearchParameter) {
         viewModelScope.launch {
-            repository.getReplays(teamSearch)
+            repository.getReplays(parameter.selectedItems, parameter.elo?.minElo ?: -1, parameter.elo?.maxElo ?: 3000)
                 .collect { liveData.value = it }
         }
     }

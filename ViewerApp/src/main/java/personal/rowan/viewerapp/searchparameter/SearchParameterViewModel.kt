@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import personal.rowan.viewerapp.EloParameter
+import personal.rowan.viewerapp.SearchParameter
 import javax.inject.Inject
 
 /**
@@ -33,13 +35,16 @@ class SearchParameterViewModel @Inject constructor(application: Application) :
         liveData.value = oldValue
     }
 
-    fun setElo(elo: Long) {
-        val oldValue = getValue()
-        oldValue.highestElo = elo
-        liveData.value = oldValue
+    fun setElo(eloParameter: EloParameter?) {
+        liveData.value = SearchParameterViewState(getValue().selectedItems, eloParameter)
     }
 
-    fun getValue() = liveData.value ?: SearchParameterViewState(mutableMapOf(), -1)
+    fun getParameters(): SearchParameter {
+        val currentValue = getValue()
+        return SearchParameter(currentValue.selectedItems.keys.toList(), currentValue.eloParameter)
+    }
+
+    private fun getValue() = liveData.value ?: SearchParameterViewState(mutableMapOf(), EloParameter.NONE)
 
     fun liveData(): LiveData<SearchParameterViewState> = liveData
 }

@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import personal.rowan.viewerapp.AUTOCOMPLETE_NAMES
 import personal.rowan.viewerapp.EloParameter
 import personal.rowan.viewerapp.R
 import personal.rowan.viewerapp.searchresult.SearchResultActivity
@@ -88,11 +89,10 @@ class SearchParameterActivity : AppCompatActivity() {
 
     private fun setupAutoComplete() {
         val editText = findViewById<AutoCompleteTextView>(R.id.et_search)
-        // todo: load full list from web service or asset file
         val autoCompleteAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_dropdown_item_1line,
-            listOf("Iron Hands", "Arcanine", "Gholdengo", "Palafin", "Pelipper", "Amoonguss")
+            AUTOCOMPLETE_NAMES
         )
         editText.setAdapter(autoCompleteAdapter)
         editText.setOnItemClickListener { _, _, _, _ ->

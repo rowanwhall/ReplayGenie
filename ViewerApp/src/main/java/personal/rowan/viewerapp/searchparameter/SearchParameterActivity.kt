@@ -33,7 +33,7 @@ class SearchParameterActivity : AppCompatActivity() {
             viewModel.removeItem(viewState.item)
         }
     }
-    private val adapter: SearchParameterAdapter = SearchParameterAdapter(listOf(), listener)
+    private val adapter: SearchParameterAdapter = SearchParameterAdapter(listener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class SearchParameterActivity : AppCompatActivity() {
         setupAutoComplete()
 
         fun bindToViewState(viewState: SearchParameterViewState) {
-            adapter.setData(viewState)
+            adapter.submitList(viewState.selectedItems.values.toList())
             searchButton.isEnabled = viewState.selectedItems.isNotEmpty()
         }
         bindToViewState(viewModel.getValue())

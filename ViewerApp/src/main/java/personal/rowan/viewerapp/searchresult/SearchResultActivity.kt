@@ -26,7 +26,7 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private val viewModel: SearchResultViewModel by viewModels()
-    private val adapter: SearchResultAdapter = SearchResultAdapter(listOf())
+    private val adapter: SearchResultAdapter = SearchResultAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ class SearchResultActivity : AppCompatActivity() {
             when (it) {
                 is Resource.Success -> {
                     val data = it.data!!
-                    adapter.setData(data)
+                    adapter.submitList(data.items)
                     emptyView.visibility = if (data.items.isEmpty()) View.VISIBLE else View.GONE
                 }
                 is Resource.Error -> {

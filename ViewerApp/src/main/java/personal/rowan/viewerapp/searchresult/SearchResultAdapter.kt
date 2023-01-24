@@ -1,38 +1,49 @@
 package personal.rowan.viewerapp.searchresult
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import personal.rowan.viewerapp.R
 
 /**
  * Created by Rowan Hall
  */
-class SearchResultAdapter(private var data: List<SearchResultItemViewState>): RecyclerView.Adapter<SearchViewHolder>() {
+class SearchResultAdapter :
+    ListAdapter<SearchResultItemViewState, SearchResultViewHolder>(SearchResultDiffCallback()) {
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setData(viewState: SearchResultViewState) {
-        data = viewState.items
-        notifyDataSetChanged()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
+        return SearchResultViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_view_search_result, parent, false)
+        )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        return SearchViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_view_search_result, parent, false))
-    }
-
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(data[position])
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
+    override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 }
 
-class SearchViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class SearchResultDiffCallback : DiffUtil.ItemCallback<SearchResultItemViewState>() {
+    override fun areItemsTheSame(
+        oldItem: SearchResultItemViewState,
+        newItem: SearchResultItemViewState
+    ): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(
+        oldItem: SearchResultItemViewState,
+        newItem: SearchResultItemViewState
+    ): Boolean {
+        return oldItem.replayId == newItem.replayId
+    }
+}
+
+class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val team1View = itemView.findViewById<TextView>(R.id.tv_team1)
     private val team2View = itemView.findViewById<TextView>(R.id.tv_team2)

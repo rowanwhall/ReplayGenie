@@ -1,27 +1,20 @@
 package personal.rowan.viewerapp.searchparameter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import personal.rowan.viewerapp.R
 
 /**
  * Created by Rowan Hall
  */
-class SearchParameterAdapter(
-    private var data: List<SearchParameterItemViewState>,
-    private val listener: SearchParameterListener
-) : RecyclerView.Adapter<SearchParameterViewHolder>() {
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setData(viewState: SearchParameterViewState) {
-        data = viewState.selectedItems.values.toList()
-        notifyDataSetChanged()
-    }
+class SearchParameterAdapter(private val listener: SearchParameterListener) :
+    ListAdapter<SearchParameterItemViewState, SearchParameterViewHolder>(SearchParameterDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchParameterViewHolder {
         return SearchParameterViewHolder(
@@ -30,12 +23,8 @@ class SearchParameterAdapter(
         )
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
-
     override fun onBindViewHolder(holder: SearchParameterViewHolder, position: Int) {
-        holder.bind(data[position], listener)
+        holder.bind(getItem(position), listener)
     }
 
     override fun onViewRecycled(holder: SearchParameterViewHolder) {
@@ -58,6 +47,22 @@ class SearchParameterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
     fun recycle() {
         removeItemImage.setOnClickListener(null)
+    }
+}
+
+class SearchParameterDiffCallback : DiffUtil.ItemCallback<SearchParameterItemViewState>() {
+    override fun areItemsTheSame(
+        oldItem: SearchParameterItemViewState,
+        newItem: SearchParameterItemViewState
+    ): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(
+        oldItem: SearchParameterItemViewState,
+        newItem: SearchParameterItemViewState
+    ): Boolean {
+        return oldItem.item == newItem.item
     }
 }
 

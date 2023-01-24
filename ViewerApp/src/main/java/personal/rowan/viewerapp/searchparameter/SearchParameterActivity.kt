@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import personal.rowan.viewerapp.AUTOCOMPLETE_NAMES
 import personal.rowan.viewerapp.EloParameter
+import personal.rowan.viewerapp.FormatParameter
 import personal.rowan.viewerapp.R
 import personal.rowan.viewerapp.searchresult.SearchResultActivity
 
@@ -38,11 +39,13 @@ class SearchParameterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_parameter)
 
+        val formatChips = findViewById<ChipGroup>(R.id.cg_format)
         val eloChips = findViewById<ChipGroup>(R.id.cg_elo)
         val selectedItemsRecycler = findViewById<RecyclerView>(R.id.rv_selected)
         val searchButton = findViewById<ExtendedFloatingActionButton>(R.id.btn_search)
 
         setupRecycler(selectedItemsRecycler)
+        setupFormatChips(formatChips)
         setupEloChips(eloChips)
         setupSearchButton(searchButton)
         setupAutoComplete()
@@ -60,6 +63,22 @@ class SearchParameterActivity : AppCompatActivity() {
     private fun setupRecycler(selectedItemsRecycler: RecyclerView) {
         selectedItemsRecycler.layoutManager = LinearLayoutManager(this)
         selectedItemsRecycler.adapter = adapter
+    }
+
+    private fun setupFormatChips(formatChips: ChipGroup) {
+        formatChips.setOnCheckedStateChangeListener { _, checkedIds ->
+            val selectedFormat = if (checkedIds.isEmpty()) {
+                FormatParameter.SERIES_TWO
+            } else {
+                when (checkedIds[0]) {
+                    R.id.chip_format_series2 -> FormatParameter.SERIES_TWO
+                    R.id.chip_format_series1 -> FormatParameter.SERIES_ONE
+                    else -> FormatParameter.SERIES_TWO
+                }
+            }
+            viewModel.setFormat(selectedFormat)
+        }
+        formatChips.check(R.id.chip_format_series2)
     }
 
     private fun setupEloChips(eloChips: ChipGroup) {

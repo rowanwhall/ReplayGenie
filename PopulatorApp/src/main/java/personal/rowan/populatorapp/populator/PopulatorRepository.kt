@@ -13,6 +13,7 @@ import personal.rowan.populatorapp.network.BaseNetworkRepository
 import personal.rowan.populatorapp.network.JsonShowdownService
 import personal.rowan.populatorapp.ReplayParser
 import personal.rowan.populatorapp.network.ScalarShowdownService
+import personal.rowan.sharedmodule.DEFAULT_FORMAT
 
 /**
  * Created by Rowan Hall
@@ -27,7 +28,7 @@ class PopulatorRepository @Inject constructor(
 
     suspend fun getReplayLogs(page: Int): Flow<Resource<PopulatorViewState>> {
         return flow {
-            when (val listResponse = safeApiCall { jsonService.getReplays(page = page) }) {
+            when (val listResponse = safeApiCall { jsonService.getReplays(format = DEFAULT_FORMAT, page = page) }) {
                 is Resource.Success -> {
                     val logMap = mutableMapOf<String, String>()
                     listResponse.data!!.forEach {
@@ -110,7 +111,7 @@ class PopulatorRepository @Inject constructor(
                     currentState.logsToCheck.keys.forEach { replayId ->
                         val replayUrl = "https://replay.pokemonshowdown.com/$replayId"
                         fireStore
-                            .collection("replay-data")
+                            .collection(DEFAULT_FORMAT)
                             .whereEqualTo("replay", replayUrl)
                             .get()
                             .addOnSuccessListener {
@@ -196,7 +197,7 @@ class PopulatorRepository @Inject constructor(
 
                     currentState.dataToUpload.forEach { replayData ->
                         fireStore
-                            .collection("replay-data")
+                            .collection(DEFAULT_FORMAT)
                             .add(replayData)
                             .addOnSuccessListener {
                                 successCount.incrementAndGet()

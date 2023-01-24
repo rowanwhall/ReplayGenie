@@ -7,6 +7,35 @@
     tools:context=".searchparameter.SearchParameterActivity">
 
     <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_format"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:chipSpacing="24dp"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cg_elo">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_format_series1"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_parameter_format_series1"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_format_series2"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_parameter_format_series2"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
         android:id="@+id/cg_elo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,7 +44,7 @@
         app:singleSelection="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cg_format"
         app:layout_constraintBottom_toTopOf="@id/et_search">
 
         <com.google.android.material.chip.Chip

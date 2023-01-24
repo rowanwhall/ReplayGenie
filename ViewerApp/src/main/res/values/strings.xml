@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Replay Genie</string>
 
+    <string name="search_parameter_format_series1">Series 1</string>
+    <string name="search_parameter_format_series2">Series 2</string>
+
     <string name="search_parameter_elo_none">Unranked</string>
     <string name="search_parameter_elo_low">0–1400</string>
     <string name="search_parameter_elo_mid">1400–1700</string>

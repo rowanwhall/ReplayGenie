@@ -23,26 +23,34 @@ class PopulatorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_populator)
 
         val pageLabel = findViewById<TextView>(R.id.page_label)
+        val statusLabel = findViewById<TextView>(R.id.status_label)
         val uploadButton = findViewById<Button>(R.id.upload_button)
 
         viewModel.liveData().observe(this) {
             when (it) {
                 is Resource.Success -> {
                     val data = it.data!!
-                    pageLabel.text = "replayDataCount: ${data.replayDataCount}\n" +
+                    pageLabel.text = "Last page loaded\n\n" +
+                            "replayDataCount: ${data.replayDataCount}\n" +
                             "logsToCheck: ${data.logsToCheck.size}\n" +
                             "dataToUpload: ${data.dataToUpload.size}\n" +
                             "successfulUploadCount: ${data.successfulUploadCount}\n" +
                             "page: ${data.currentPage}"
-                    viewModel.changePage(data.currentPage + 1)
-                    uploadButton.isEnabled = true
+                    if (data.dataToUpload.isNotEmpty()) {
+                        viewModel.changePage(data.currentPage + 1)
+                        viewModel.populateBackend()
+                    } else {
+                        statusLabel.text = "All pages uploaded"
+                        viewModel.changePage(1)
+                        uploadButton.isEnabled = true
+                    }
                 }
                 is Resource.Error -> {
-                    pageLabel.text = it.message ?: "Generic Error"
+                    statusLabel.text = it.message ?: "Generic Error"
                     uploadButton.isEnabled = true
                 }
                 is Resource.Loading -> {
-                    pageLabel.text = "Loading..."
+                    statusLabel.text = "Loading..."
                     uploadButton.isEnabled = false
                 }
             }

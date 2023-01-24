@@ -28,7 +28,12 @@ class SearchResultViewModel @Inject constructor(
 
     fun getReplays(parameter: SearchParameter) {
         viewModelScope.launch {
-            repository.getReplays(parameter.selectedItems, parameter.elo?.minElo ?: -1, parameter.elo?.maxElo ?: 3000)
+            repository.getReplays(
+                parameter.format.argumentString,
+                parameter.selectedItems,
+                parameter.elo?.minElo ?: -1,
+                parameter.elo?.maxElo ?: 3000
+            )
                 .collect { liveData.value = it }
         }
     }

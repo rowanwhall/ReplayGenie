@@ -37,11 +37,19 @@ class ReplayParser {
             }
 
         val regex = "<strong>(.*)</strong>".toRegex()
-        val ratings = regex.findAll(replayString).map { it.groupValues[1].toInt() }.toList()
+        val ratings = regex.findAll(replayString)
+            .map { it.groupValues[1] }
+            .filter { isNumeric(it) }
+            .map { it.toInt() }
         val maxRating = ratings.maxOrNull() ?: -1
 
         return ParsedReplay(team1, team2, maxRating)
     }
+}
+
+private fun isNumeric(toCheck: String): Boolean {
+    val regex = "-?[0-9]+(\\.[0-9]+)?".toRegex()
+    return toCheck.matches(regex)
 }
 
 data class ParsedReplay(

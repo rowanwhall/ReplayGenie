@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import personal.rowan.sharedmodule.DEFAULT_FORMAT
 import personal.rowan.sharedmodule.Resource
 import javax.inject.Inject
 
@@ -18,11 +19,11 @@ import javax.inject.Inject
 class SearchResultRepository @Inject constructor(private val fireStore: FirebaseFirestore){
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun getReplays(teamSearch: List<String>, minElo: Int, maxElo: Int): Flow<Resource<SearchResultViewState>> {
+    suspend fun getReplays(format: String = DEFAULT_FORMAT, teamSearch: List<String>, minElo: Int, maxElo: Int): Flow<Resource<SearchResultViewState>> {
         return callbackFlow {
             trySend(Resource.Loading())
             fireStore
-                .collection("replay-data")
+                .collection(format)
                 .limit(50)
                 .whereArrayContainsAny("allteams", teamSearch)
                 .whereGreaterThanOrEqualTo("highElo", minElo)

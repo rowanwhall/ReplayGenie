@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,8 @@ import personal.rowan.viewerapp.EloParameter
 import personal.rowan.viewerapp.FormatParameter
 import personal.rowan.viewerapp.R
 import personal.rowan.viewerapp.searchresult.SearchResultActivity
+
+private const val MAX_SELECTION = 3
 
 /**
  * Created by Rowan Hall
@@ -115,8 +118,12 @@ class SearchParameterActivity : AppCompatActivity() {
         )
         editText.setAdapter(autoCompleteAdapter)
         editText.setOnItemClickListener { _, _, _, _ ->
-            val selectedItem = editText.text.toString()
-            viewModel.selectItem(selectedItem)
+            if (adapter.itemCount >= MAX_SELECTION) {
+                Toast.makeText(this, R.string.search_parameter_team_overflow_error, Toast.LENGTH_SHORT).show()
+            } else {
+                val selectedItem = editText.text.toString()
+                viewModel.selectItem(selectedItem)
+            }
             editText.text.clear()
         }
     }

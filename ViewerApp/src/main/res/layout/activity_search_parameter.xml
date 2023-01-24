@@ -6,18 +6,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".searchparameter.SearchParameterActivity">
 
+    <TextView
+        android:id="@+id/format_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/search_parameter_format_label"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cg_format"/>
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cg_format"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:chipSpacing="24dp"
         app:singleSelection="true"
         app:selectionRequired="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cg_elo">
+        app:layout_constraintTop_toBottomOf="@id/format_label"
+        app:layout_constraintBottom_toTopOf="@id/elo_label">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_format_series1"
@@ -35,17 +51,33 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+    <TextView
+        android:id="@+id/elo_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/search_parameter_elo_label"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cg_format"
+        app:layout_constraintBottom_toTopOf="@id/cg_elo"/>
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cg_elo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:chipSpacing="24dp"
         app:singleSelection="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cg_format"
-        app:layout_constraintBottom_toTopOf="@id/et_search">
+        app:layout_constraintTop_toBottomOf="@id/elo_label"
+        app:layout_constraintBottom_toTopOf="@id/team_label">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_elo_none"
@@ -76,6 +108,21 @@
             android:text="@string/search_parameter_elo_high"/>
 
     </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/team_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/search_parameter_team_label"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cg_elo"
+        app:layout_constraintBottom_toTopOf="@id/et_search"/>
 
     <AutoCompleteTextView
         android:id="@+id/et_search"

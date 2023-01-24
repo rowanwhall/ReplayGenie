@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">Replay Genie</string>
 
+    <string name="search_parameter_format_label">Filter by format (required)</string>
     <string name="search_parameter_format_series1">Series 1</string>
     <string name="search_parameter_format_series2">Series 2</string>
-
+    <string name="search_parameter_elo_label">Filter by ELO (optional)</string>
     <string name="search_parameter_elo_none">Unranked</string>
     <string name="search_parameter_elo_low">0–1400</string>
     <string name="search_parameter_elo_mid">1400–1700</string>
     <string name="search_parameter_elo_high">1701+</string>
+    <string name="search_parameter_team_label">Filter by team members (1–3)</string>
     <string name="search_parameter_et_hint">Enter names</string>
+    <string name="search_parameter_team_overflow_error">You have already selected 3 team members, please remove one.</string>
     <string name="search_parameter_button">Search</string>
 
     <string name="search_result_empty_view">No Results Found</string>

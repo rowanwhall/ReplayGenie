@@ -8,7 +8,7 @@ import com.google.android.material.chip.ChipGroup
 /**
  * Created by Rowan Hall
  */
-class EntryChipGroup<T: ChipData> : ChipGroup {
+class EntryChipGroup<T: ChipEntry> : ChipGroup {
 
     constructor(context: Context) : super(context)
 
@@ -16,23 +16,23 @@ class EntryChipGroup<T: ChipData> : ChipGroup {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private var chipMapping = mutableMapOf<T, Chip>()
+    private var entryToChip = mutableMapOf<T, Chip>()
     private var data = setOf<T>()
     private var closeListener: CloseListener<T>? = null
 
     private fun notifyDataSetChanged() {
         val itemsToRemove = mutableSetOf<T>()
-        chipMapping.keys.forEach {
+        entryToChip.keys.forEach {
             if (!data.contains(it)) {
-                removeView(chipMapping[it])
+                removeView(entryToChip[it])
                 itemsToRemove.add(it)
             }
         }
         itemsToRemove.forEach {
-            chipMapping.remove(it)
+            entryToChip.remove(it)
         }
         data.forEach { item ->
-            if (!chipMapping.containsKey(item)) {
+            if (!entryToChip.containsKey(item)) {
                 val chip = Chip(context)
                 chip.text = item.label()
                 chip.isChipIconVisible = false
@@ -44,13 +44,13 @@ class EntryChipGroup<T: ChipData> : ChipGroup {
                 chip.isClickable = true
                 chip.isCheckable = false
 
-                chipMapping[item] = chip
+                entryToChip[item] = chip
                 addView(chip)
             }
         }
     }
 
-    fun setData(data: List<T>) {
+    fun setData(data: Collection<T>) {
         this.data = data.toSet()
         notifyDataSetChanged()
     }
@@ -64,10 +64,10 @@ class EntryChipGroup<T: ChipData> : ChipGroup {
     }
 }
 
-interface ChipData {
+interface ChipEntry {
     fun label(): String
 }
 
-interface CloseListener<T: ChipData> {
+interface CloseListener<T: ChipEntry> {
     fun onClose(item: T)
 }

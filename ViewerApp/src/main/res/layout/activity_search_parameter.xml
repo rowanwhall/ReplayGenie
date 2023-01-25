@@ -30,7 +30,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.chip.ChipGroup
+            <personal.rowan.viewerapp.SingleChoiceChipGroup
                 android:id="@+id/cg_format"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/search_parameter_format_series2" />
 
-            </com.google.android.material.chip.ChipGroup>
+            </personal.rowan.viewerapp.SingleChoiceChipGroup>
 
             <TextView
                 android:id="@+id/elo_label"
@@ -75,7 +75,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cg_format" />
 
-            <com.google.android.material.chip.ChipGroup
+            <personal.rowan.viewerapp.SingleChoiceChipGroup
                 android:id="@+id/cg_elo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/search_parameter_elo_high" />
 
-            </com.google.android.material.chip.ChipGroup>
+            </personal.rowan.viewerapp.SingleChoiceChipGroup>
 
             <TextView
                 android:id="@+id/team_label"

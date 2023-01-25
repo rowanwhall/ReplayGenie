@@ -7,8 +7,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +31,8 @@ class SearchParameterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_parameter)
 
-        val formatChips = findViewById<ChipGroup>(R.id.cg_format)
-        val eloChips = findViewById<ChipGroup>(R.id.cg_elo)
+        val formatChips = findViewById<SingleChoiceChipGroup>(R.id.cg_format)
+        val eloChips = findViewById<SingleChoiceChipGroup>(R.id.cg_elo)
         val selectedChips = findViewById<EntryChipGroup<SearchParameterItemViewState>>(R.id.cg_selected)
         val searchButton = findViewById<ExtendedFloatingActionButton>(R.id.btn_search)
 
@@ -44,6 +42,8 @@ class SearchParameterActivity : AppCompatActivity() {
         setupAutoComplete(selectedChips)
 
         fun bindToViewState(viewState: SearchParameterViewState) {
+            formatChips.selectChoice(viewState.format)
+            eloChips.selectChoice(viewState.eloParameter)
             selectedChips.setData(viewState.selectedItems.values.toList())
             searchButton.isEnabled = viewState.selectedItems.isNotEmpty()
         }
@@ -53,7 +53,7 @@ class SearchParameterActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupFormatChips(formatChips: ChipGroup) {
+    private fun setupFormatChips(formatChips: SingleChoiceChipGroup) {
         formatChips.setOnCheckedStateChangeListener { _, checkedIds ->
             val selectedFormat = if (checkedIds.isEmpty()) {
                 FormatParameter.SERIES_TWO
@@ -66,7 +66,7 @@ class SearchParameterActivity : AppCompatActivity() {
             }
             viewModel.setFormat(selectedFormat)
         }
-        formatChips.check(R.id.chip_format_series2)
+        viewModel.setFormat(FormatParameter.SERIES_TWO)
     }
 
     private fun setupEloChips(eloChips: ChipGroup) {

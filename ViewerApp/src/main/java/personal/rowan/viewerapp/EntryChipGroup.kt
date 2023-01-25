@@ -16,28 +16,42 @@ class EntryChipGroup<T: ChipData> : ChipGroup {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private var data = listOf<T>()
+    private var chipMapping = mutableMapOf<T, Chip>()
+    private var data = setOf<T>()
     private var closeListener: CloseListener<T>? = null
 
     private fun notifyDataSetChanged() {
-        removeAllViews()
-        data.forEach { item ->
-            val chip = Chip(context)
-            chip.text = item.label()
-            chip.isChipIconVisible = false
-            chip.isCloseIconVisible = true
-            chip.setOnCloseIconClickListener {
-                removeView(chip)
-                closeListener?.onClose(item)
+        val itemsToRemove = mutableSetOf<T>()
+        chipMapping.keys.forEach {
+            if (!data.contains(it)) {
+                removeView(chipMapping[it])
+                itemsToRemove.add(it)
             }
-            chip.isClickable = true
-            chip.isCheckable = false
-            addView(chip)
+        }
+        itemsToRemove.forEach {
+            chipMapping.remove(it)
+        }
+        data.forEach { item ->
+            if (!chipMapping.containsKey(item)) {
+                val chip = Chip(context)
+                chip.text = item.label()
+                chip.isChipIconVisible = false
+                chip.isCloseIconVisible = true
+                chip.setOnCloseIconClickListener {
+                    removeView(chip)
+                    closeListener?.onClose(item)
+                }
+                chip.isClickable = true
+                chip.isCheckable = false
+
+                chipMapping[item] = chip
+                addView(chip)
+            }
         }
     }
 
     fun setData(data: List<T>) {
-        this.data = data
+        this.data = data.toSet()
         notifyDataSetChanged()
     }
 

@@ -14,13 +14,10 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import personal.rowan.viewerapp.AUTOCOMPLETE_NAMES
-import personal.rowan.viewerapp.EloParameter
-import personal.rowan.viewerapp.FormatParameter
-import personal.rowan.viewerapp.R
+import personal.rowan.viewerapp.*
 import personal.rowan.viewerapp.searchresult.SearchResultActivity
 
-private const val MAX_SELECTION = 3
+private const val MAX_SELECTION = 6
 
 /**
  * Created by Rowan Hall
@@ -31,12 +28,6 @@ private const val MAX_SELECTION = 3
 class SearchParameterActivity : AppCompatActivity() {
 
     private val viewModel: SearchParameterViewModel by viewModels()
-    private val listener = object : SearchParameterListener {
-        override fun onItemRemoved(viewState: SearchParameterItemViewState) {
-            viewModel.removeItem(viewState.item)
-        }
-    }
-    private val adapter: SearchParameterAdapter = SearchParameterAdapter(listener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,28 +35,22 @@ class SearchParameterActivity : AppCompatActivity() {
 
         val formatChips = findViewById<ChipGroup>(R.id.cg_format)
         val eloChips = findViewById<ChipGroup>(R.id.cg_elo)
-        val selectedItemsRecycler = findViewById<RecyclerView>(R.id.rv_selected)
+        val selectedChips = findViewById<EntryChipGroup<SearchParameterItemViewState>>(R.id.cg_selected)
         val searchButton = findViewById<ExtendedFloatingActionButton>(R.id.btn_search)
 
-        setupRecycler(selectedItemsRecycler)
         setupFormatChips(formatChips)
         setupEloChips(eloChips)
         setupSearchButton(searchButton)
-        setupAutoComplete()
+        setupAutoComplete(selectedChips)
 
         fun bindToViewState(viewState: SearchParameterViewState) {
-            adapter.submitList(viewState.selectedItems.values.toList())
+            selectedChips.setData(viewState.selectedItems.values.toList())
             searchButton.isEnabled = viewState.selectedItems.isNotEmpty()
         }
         bindToViewState(viewModel.getValue())
         viewModel.liveData().observe(this) {
             bindToViewState(it)
         }
-    }
-
-    private fun setupRecycler(selectedItemsRecycler: RecyclerView) {
-        selectedItemsRecycler.layoutManager = LinearLayoutManager(this)
-        selectedItemsRecycler.adapter = adapter
     }
 
     private fun setupFormatChips(formatChips: ChipGroup) {
@@ -109,7 +94,12 @@ class SearchParameterActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAutoComplete() {
+    private fun setupAutoComplete(selectedChips: EntryChipGroup<SearchParameterItemViewState>) {
+        selectedChips.setCloseListener(object : CloseListener<SearchParameterItemViewState> {
+            override fun onClose(item: SearchParameterItemViewState) {
+                viewModel.removeItem(item.item)
+            }
+        })
         val editText = findViewById<AutoCompleteTextView>(R.id.et_search)
         val autoCompleteAdapter = ArrayAdapter(
             this,
@@ -118,7 +108,7 @@ class SearchParameterActivity : AppCompatActivity() {
         )
         editText.setAdapter(autoCompleteAdapter)
         editText.setOnItemClickListener { _, _, _, _ ->
-            if (adapter.itemCount >= MAX_SELECTION) {
+            if (selectedChips.getCount() >= MAX_SELECTION) {
                 Toast.makeText(this, R.string.search_parameter_team_overflow_error, Toast.LENGTH_SHORT).show()
             } else {
                 val selectedItem = editText.text.toString()

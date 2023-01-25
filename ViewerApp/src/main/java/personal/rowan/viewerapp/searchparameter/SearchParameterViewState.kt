@@ -1,5 +1,6 @@
 package personal.rowan.viewerapp.searchparameter
 
+import personal.rowan.viewerapp.ChipData
 import personal.rowan.viewerapp.EloParameter
 import personal.rowan.viewerapp.FormatParameter
 
@@ -12,4 +13,8 @@ data class SearchParameterViewState(
     val eloParameter: EloParameter?
 )
 
-data class SearchParameterItemViewState(val item: String)
+data class SearchParameterItemViewState(val item: String): ChipData {
+    override fun label(): String {
+        return item
+    }
+}

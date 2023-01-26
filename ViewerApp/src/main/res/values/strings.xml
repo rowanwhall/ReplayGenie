@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Replay Genie</string>
 
+    <string name="search_parameter_activity_label">Search Filters</string>
     <string name="search_parameter_format_label">Filter by format (required)</string>
     <string name="search_parameter_format_series1">Series 1</string>
     <string name="search_parameter_format_series2">Series 2</string>
@@ -14,6 +15,7 @@
     <string name="search_parameter_team_overflow_error">You have already selected the maximum number of names, please remove one.</string>
     <string name="search_parameter_button">Search</string>
 
+    <string name="search_result_activity_label">Search Results</string>
     <string name="search_result_empty_view">No Results Found</string>
     <string name="search_result_error">Something went wrong, please try again</string>
     <string name="search_result_elo_header">High ELO: %1$s</string>

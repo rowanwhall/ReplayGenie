@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -32,6 +33,7 @@ class SearchResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_result)
 
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.srl_search)
         val emptyView = findViewById<TextView>(R.id.tv_empty)
         val recyclerView = findViewById<RecyclerView>(R.id.rv_search)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -39,16 +41,18 @@ class SearchResultActivity : AppCompatActivity() {
         viewModel.liveData().observe(this) {
             when (it) {
                 is Resource.Success -> {
-                    val data = it.data!!
-                    adapter.submitList(data.items)
-                    emptyView.visibility = if (data.items.isEmpty()) View.VISIBLE else View.GONE
+                    swipeRefreshLayout.isRefreshing = false
+                    val data = it.data?.items ?: listOf()
+                    adapter.submitList(data)
+                    emptyView.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
                 }
                 is Resource.Error -> {
                     Log.e(TAG, it.message ?: "No error message")
+                    swipeRefreshLayout.isRefreshing = false
                     showErrorAndFinish()
                 }
                 is Resource.Loading -> {
-                    Toast.makeText(this, "loading", Toast.LENGTH_SHORT).show()
+                    swipeRefreshLayout.isRefreshing = true
                 }
             }
         }
@@ -57,7 +61,10 @@ class SearchResultActivity : AppCompatActivity() {
         val parameters = intent.getParcelableExtra<SearchParameter>(EXTRA_KEY_PARAMETERS) ?: {
             showErrorAndFinish()
         }
-        viewModel.getReplays((parameters as SearchParameter))
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getReplays(parameters as SearchParameter)
+        }
+        viewModel.getReplays(parameters as SearchParameter)
     }
 
     private fun showErrorAndFinish() {

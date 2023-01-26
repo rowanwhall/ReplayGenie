@@ -16,4 +16,7 @@
 
     <string name="search_result_empty_view">No Results Found</string>
     <string name="search_result_error">Something went wrong, please try again</string>
+    <string name="search_result_elo_header">High ELO: %1$s</string>
+    <string name="search_result_elo_missing">No ELO Data</string>
+    <string name="search_result_replay_btn">View Replay</string>
 </resources>

@@ -4,6 +4,7 @@
     <string name="search_parameter_format_label">Filter by format (required)</string>
     <string name="search_parameter_format_series1">Series 1</string>
     <string name="search_parameter_format_series2">Series 2</string>
+    <string name="search_parameter_format_regc">Reg C</string>
     <string name="search_parameter_elo_label">Filter by ELO (optional)</string>
     <string name="search_parameter_elo_none">Unranked</string>
     <string name="search_parameter_elo_low">0–1400</string>

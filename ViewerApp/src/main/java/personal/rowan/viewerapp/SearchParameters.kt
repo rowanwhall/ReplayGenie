@@ -35,6 +35,11 @@ enum class EloParameter(val minElo: Int, val maxElo: Int): ChipChoice {
 }
 
 enum class FormatParameter(val argumentString: String): ChipChoice {
+    REGULATION_C("gen9vgc2023regulationc") {
+        @IdRes override fun resId(): Int {
+            return R.id.chip_format_regc
+        }
+    },
     SERIES_TWO("gen9vgc2023series2") {
         @IdRes override fun resId(): Int {
             return R.id.chip_format_series2

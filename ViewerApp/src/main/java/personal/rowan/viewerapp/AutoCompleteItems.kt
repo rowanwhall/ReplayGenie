@@ -414,6 +414,10 @@ val AUTOCOMPLETE_NAMES = listOf(
     "Baxcalibur",
     "Gimmighoul",
     "Gholdengo",
+    "Wo-Chien",
+    "Chien-Pao",
+    "Ting-Lu",
+    "Chi-Yu",
     "Roaring Moon",
     "Iron Valiant",
 )

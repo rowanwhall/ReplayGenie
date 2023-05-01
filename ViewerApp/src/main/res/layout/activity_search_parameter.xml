@@ -58,6 +58,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/search_parameter_format_series2" />
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_format_regc"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_parameter_format_regc" />
+
             </personal.rowan.viewerapp.SingleChoiceChipGroup>
 
             <TextView

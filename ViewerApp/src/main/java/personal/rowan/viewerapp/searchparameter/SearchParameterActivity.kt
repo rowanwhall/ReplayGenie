@@ -54,19 +54,21 @@ class SearchParameterActivity : AppCompatActivity() {
     }
 
     private fun setupFormatChips(formatChips: SingleChoiceChipGroup) {
+        val defaultFormat = FormatParameter.REGULATION_C
         formatChips.setOnCheckedStateChangeListener { _, checkedIds ->
             val selectedFormat = if (checkedIds.isEmpty()) {
-                FormatParameter.SERIES_TWO
+                defaultFormat
             } else {
                 when (checkedIds[0]) {
+                    R.id.chip_format_regc -> FormatParameter.REGULATION_C
                     R.id.chip_format_series2 -> FormatParameter.SERIES_TWO
                     R.id.chip_format_series1 -> FormatParameter.SERIES_ONE
-                    else -> FormatParameter.SERIES_TWO
+                    else -> defaultFormat
                 }
             }
             viewModel.setFormat(selectedFormat)
         }
-        viewModel.setFormat(FormatParameter.SERIES_TWO)
+        viewModel.setFormat(defaultFormat)
     }
 
     private fun setupEloChips(eloChips: ChipGroup) {

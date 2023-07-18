@@ -15,7 +15,7 @@ import kotlinx.coroutines.FlowPreview
 import personal.rowan.viewerapp.*
 import personal.rowan.viewerapp.searchresult.SearchResultActivity
 
-private const val MAX_SELECTION = 6
+private const val MAX_SELECTION = 1
 
 /**
  * Created by Rowan Hall
@@ -54,12 +54,13 @@ class SearchParameterActivity : AppCompatActivity() {
     }
 
     private fun setupFormatChips(formatChips: SingleChoiceChipGroup) {
-        val defaultFormat = FormatParameter.REGULATION_C
+        val defaultFormat = FormatParameter.REGULATION_D
         formatChips.setOnCheckedStateChangeListener { _, checkedIds ->
             val selectedFormat = if (checkedIds.isEmpty()) {
                 defaultFormat
             } else {
                 when (checkedIds[0]) {
+                    R.id.chip_format_regd -> FormatParameter.REGULATION_D
                     R.id.chip_format_regc -> FormatParameter.REGULATION_C
                     R.id.chip_format_series2 -> FormatParameter.SERIES_TWO
                     R.id.chip_format_series1 -> FormatParameter.SERIES_ONE
@@ -111,7 +112,17 @@ class SearchParameterActivity : AppCompatActivity() {
         editText.setAdapter(autoCompleteAdapter)
         editText.setOnItemClickListener { _, _, _, _ ->
             if (selectedChips.getCount() >= MAX_SELECTION) {
-                Toast.makeText(this, R.string.search_parameter_team_overflow_error, Toast.LENGTH_SHORT).show()
+                // If we only allow one item, just clear the selected chips entirely
+                if (MAX_SELECTION == 1) {
+                    val selectedItem = editText.text.toString()
+                    viewModel.selectItem(selectedItem, true)
+                } else {
+                    Toast.makeText(
+                        this,
+                        R.string.search_parameter_team_overflow_error,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
                 val selectedItem = editText.text.toString()
                 viewModel.selectItem(selectedItem)

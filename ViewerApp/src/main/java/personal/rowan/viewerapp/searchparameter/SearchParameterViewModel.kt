@@ -24,8 +24,9 @@ class SearchParameterViewModel @Inject constructor(application: Application) :
 
     private val liveData: MutableLiveData<SearchParameterViewState> = MutableLiveData()
 
-    fun selectItem(item: String) {
+    fun selectItem(item: String, clear: Boolean = false) {
         val oldValue = getValue()
+        if (clear) oldValue.selectedItems.clear()
         oldValue.selectedItems[item] = SearchParameterItemViewState(item)
         liveData.value = oldValue
     }
@@ -51,7 +52,7 @@ class SearchParameterViewModel @Inject constructor(application: Application) :
         return SearchParameter(currentValue.format, currentValue.selectedItems.keys.toList(), currentValue.eloParameter)
     }
 
-    fun getValue() = liveData.value ?: SearchParameterViewState(FormatParameter.REGULATION_C, mutableMapOf(), null)
+    fun getValue() = liveData.value ?: SearchParameterViewState(FormatParameter.REGULATION_D, mutableMapOf(), null)
 
     fun liveData(): LiveData<SearchParameterViewState> = liveData
 }

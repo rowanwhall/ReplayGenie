@@ -5,12 +5,13 @@
     <string name="search_parameter_format_series1">Series 1</string>
     <string name="search_parameter_format_series2">Series 2</string>
     <string name="search_parameter_format_regc">Reg C</string>
+    <string name="search_parameter_format_regd">Reg D</string>
     <string name="search_parameter_elo_label">Filter by ELO (optional)</string>
     <string name="search_parameter_elo_none">Unranked</string>
     <string name="search_parameter_elo_low">0–1400</string>
     <string name="search_parameter_elo_mid">1400–1700</string>
     <string name="search_parameter_elo_high">1701+</string>
-    <string name="search_parameter_team_label">Filter by name (select at least 1)</string>
+    <string name="search_parameter_team_label">Filter by name (required)</string>
     <string name="search_parameter_et_hint">Enter names</string>
     <string name="search_parameter_team_overflow_error">You have already selected the maximum number of names, please remove one.</string>
     <string name="search_parameter_button">Search</string>

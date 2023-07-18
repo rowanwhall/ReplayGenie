@@ -36,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                app:chipSpacing="24dp"
                 app:layout_constraintBottom_toTopOf="@id/elo_label"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -45,11 +44,18 @@
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_format_series1"
+                    android:id="@+id/chip_format_regd"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/search_parameter_format_series1" />
+                    android:text="@string/search_parameter_format_regd" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_format_regc"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_parameter_format_regc" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_format_series2"
@@ -59,11 +65,11 @@
                     android:text="@string/search_parameter_format_series2" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_format_regc"
+                    android:id="@+id/chip_format_series1"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/search_parameter_format_regc" />
+                    android:text="@string/search_parameter_format_series1" />
 
             </personal.rowan.viewerapp.SingleChoiceChipGroup>
 
@@ -88,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                app:chipSpacing="24dp"
                 app:layout_constraintBottom_toTopOf="@id/team_label"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

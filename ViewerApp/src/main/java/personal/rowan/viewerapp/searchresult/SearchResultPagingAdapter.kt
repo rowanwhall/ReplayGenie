@@ -7,26 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import personal.rowan.viewerapp.R
 
 /**
  * Created by Rowan Hall
  */
-class SearchResultAdapter :
-    ListAdapter<SearchResultItemViewState, SearchResultViewHolder>(SearchResultDiffCallback()) {
+class SearchResultPagingAdapter: PagingDataAdapter<SearchResultItemViewState, SearchResultViewHolder>(SearchResultDiffCallback()) {
+    override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
         return SearchResultViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_view_search_result, parent, false)
         )
-    }
-
-    override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
-        holder.bind(getItem(position))
     }
 
     override fun onViewRecycled(holder: SearchResultViewHolder) {

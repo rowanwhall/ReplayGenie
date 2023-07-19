@@ -5,11 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
-import personal.rowan.sharedmodule.Resource
 import personal.rowan.viewerapp.SearchParameter
 import javax.inject.Inject
 
@@ -24,19 +25,23 @@ class SearchResultViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val liveData: MutableLiveData<Resource<SearchResultViewState>> = MutableLiveData()
+    private val pagedLiveData: MutableLiveData<PagingData<SearchResultItemViewState>> =
+        MutableLiveData()
 
-    fun getReplays(parameter: SearchParameter) {
+    fun getPagedFeed(parameter: SearchParameter) {
         viewModelScope.launch {
-            repository.getReplays(
+            repository.getFeedPaging(
                 parameter.format.argumentString,
                 parameter.selectedItems,
                 parameter.elo?.minElo ?: -1,
                 parameter.elo?.maxElo ?: 3000
             )
-                .collect { liveData.value = it }
+                .cachedIn(viewModelScope)
+                .collect {
+                    pagedLiveData.value = it
+                }
         }
     }
 
-    fun liveData(): LiveData<Resource<SearchResultViewState>> = liveData
+    fun pagedLiveData(): LiveData<PagingData<SearchResultItemViewState>> = pagedLiveData
 }
